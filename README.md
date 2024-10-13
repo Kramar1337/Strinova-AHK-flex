@@ -53,6 +53,12 @@ NumpadAdd - Фуксия (Зубец).
 10. Запустить скрипты из основной папки: Str-Aem.ahk, Str-Mokros.ahk, Str-Rks.ahk, Str-Tr.ahk
 11. Настроить конфиг по вкусу "StronovaFlex\data\config.ini"
 
+Настройки игры:
+ - Оконный безрамочный
+ - Прицеливание от прицела - удержание
+ - Чувствительности в игре - 5-1-1-1-1-1-1 (все по умолчанию)
+ - Обводка противника - Темно-фиолетовый
+
 ## Disclaimer 
 This project is intended solely for educational purposes. 
 
