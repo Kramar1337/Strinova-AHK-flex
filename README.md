@@ -5,7 +5,6 @@
 __🚀Функционал:🚀__
 
 - Aim
-- RCS
 - Trigger
 - RCS (Контроль отдачи)
 - Macros
@@ -52,7 +51,7 @@ NumpadAdd - Фуксия (Зубец).
 8. Нажать "WR" в KeyboardID, и "WR" в MouseID
 9. Dll-ки разблочены, драйвер установлен, ID-шники получены, что дальше?
 10. Запустить скрипты из основной папки: Str-Aem.ahk, Str-Mokros.ahk, Str-Rks.ahk, Str-Tr.ahk
-11. Настроить конфиг по вкусу StronovaFlex\data\config.ini
+11. Настроить конфиг по вкусу "StronovaFlex\data\config.ini"
 
 ## Disclaimer 
 This project is intended solely for educational purposes. 
