@@ -296,16 +296,8 @@ If TrMode = 1
 				}
 			Else
 				{
-					If InterDriverUse
-					{
-					AHI.SendKeyEvent(keyboardId, 0x19, 1) 	;0x19 код нажатия "P" Make (HEX)
-					sleep 1
-					AHI.SendKeyEvent(keyboardId, 0x99, 0) 	;0x99 код отпускания "P" Break (HEX)
-					}
-					Else
-					{
-					Send {Blind}{P}
-					}
+					SendInput {Blind}{vk1}
+					sleep %HoldFF%
 					sleep %HoldFF%
 				}
 		}
@@ -315,20 +307,9 @@ If TrMode = 2
 	while (GetKeyState(key_tr, "P"))
     {
 	    PixelSearch,,, 1MouseX, 1MouseY, 1MouseX2, 1MouseY2, Color1, ColVn, Fast RGB
-		if ErrorLevel
-		1:=1
-		else
+		if ErrorLevel = 0
         {
-			If InterDriverUse
-			{
-			AHI.SendKeyEvent(keyboardId, 0x19, 1) 	;0x19 код нажатия "P" Make (HEX)
-			sleep 1
-			AHI.SendKeyEvent(keyboardId, 0x99, 0) 	;0x99 код отпускания "P" Break (HEX)
-			}
-			Else
-			{
-			Send {Blind}{P}
-			}
+			SendInput {Blind}{vk1}
 			sleep %HoldFF%
         }
 	}

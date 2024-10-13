@@ -86,16 +86,8 @@ IniRead, AimOffsetPix, data\config.ini, Settings, AimAimOffsetPix, 30
 IniRead, EMCol, data\config.ini, Settings, AimEMCol, 0x8D0092
 IniRead, ColVn, data\config.ini, Settings, AimColVn, 50
 IniRead, SdeltaS, data\config.ini, Settings, SdeltaS, 0
+IniRead, deadZoneSize, data\config.ini, Settings, deadZoneSize, 0
 
-
-; captureRange := 100
-; circleColor := 0x5FFF0000
-; thickness := 1
-
-; Sensitivity := 0.1
-; AimOffsetPix = 30
-; EMCol := 0x8D0092
-; ColVn := 50
 NearAimScanL := A_ScreenWidth // 2 - captureRange
 NearAimScanT := A_ScreenHeight // 2 - captureRange
 NearAimScanR := A_ScreenWidth // 2 + captureRange
@@ -134,14 +126,18 @@ OnGameClose()
 
 
 
-Metkakey_start:
+Metkakey_start: 
 while (GetKeyState(key_aimStart, "P"))
 {
-	; Sleep 1
+    ; Sleep 1
     PixelSearch, AimPixelX, AimPixelY, NearAimScanL, NearAimScanT, NearAimScanR, NearAimScanB, EMCol, ColVn, Fast RGB
-    if ErrorLevel=0
-	{
-        AimAtTarget(AimPixelX, AimPixelY + AimOffsetPix)
+    if ErrorLevel = 0
+    {
+        ; Проверяем мертвую зону
+        if (Abs(AimPixelX - (A_ScreenWidth / 2)) > deadZoneSize || Abs(AimPixelY - (A_ScreenHeight / 2)) > deadZoneSize)
+        {
+            AimAtTarget(AimPixelX, AimPixelY + AimOffsetPix)
+        }
     }
 }
 Return
@@ -150,24 +146,35 @@ AimAtTarget(targetX, targetY) {
     global
     centerX := A_ScreenWidth / 2
     centerY := A_ScreenHeight / 2
+    
+    ; Вычисляем отклонение от центра экрана
     deltaX := (targetX - centerX)
     deltaY := (targetY - centerY)
+    
+    ; Применяем чувствительность
     deltaX := deltaX * sensitivity
     deltaY := deltaY * sensitivity
-    MoveMouseBy(deltaX, deltaY)
-}
-MoveMouseBy(deltaX, deltaY) {
-    global
+    
+    ; Округление значений для стабильности
     deltaX := Round(deltaX)
     deltaY := Round(deltaY)
-	if (deltaX < 0)
+	if (deltaX < 0 && deltaX > -2)
 	deltaX -= SdeltaS
-	if (deltaX > 0)
+	if (deltaX > 0 && deltaX < 2)
 	deltaX += SdeltaS
-	; ToolTip %deltaX%`n%deltaY%, round(A_ScreenWidth * .5 - 50), round(A_ScreenHeight * .5)
-	AHI.SendMouseMoveRelative(mouseid, deltaX, deltaY)
-	
+    
+    ; Движение мыши
+    AHI.SendMouseMoveRelative(mouseid, deltaX, deltaY)
 }
+
+
+
+
+
+; Зона мертвой зоны
+; Регулировка скорости наведения
+; Плавное движение мыши
+
 ;==========================================Функция: есть курсор мышки - 1, нет курсора - 0
 FuncCursorVisible()
 {
