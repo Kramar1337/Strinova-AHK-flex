@@ -59,7 +59,7 @@ Gui, -Caption +AlwaysOnTop
 Gui, Add, Button, gStart w100 h30, Start
 Gui, Add, Button, gHashChanger w100 h30, Hash Changer
 Gui, Add, Button, gNameChanger w100 h30, Name Changer
-; Gui, Add, Button, gUpCfg w100 h30, Import Config
+Gui, Add, Button, gUpCfg w100 h30, Import Config
 Gui, Add, Button, gExit w100 h30, Exit
 randomName := GenerateRandomName(15) ; 10 - длина имени
 yPosGui := A_ScreenHeight // 2 - round(A_ScreenHeight * (300 / 1440))
