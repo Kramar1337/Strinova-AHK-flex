@@ -85,7 +85,7 @@ IniRead, Sensitivity, data\config.ini, Settings, AimSensitivity, 0.1
 IniRead, AimOffsetPix, data\config.ini, Settings, AimAimOffsetPix, 30
 IniRead, EMCol, data\config.ini, Settings, AimEMCol, 0x8D0092
 IniRead, ColVn, data\config.ini, Settings, AimColVn, 50
-
+IniRead, SdeltaS, data\config.ini, Settings, SdeltaS, 0
 
 
 ; captureRange := 100
@@ -134,9 +134,6 @@ OnGameClose()
 
 
 
-
-
-
 Metkakey_start:
 while (GetKeyState(key_aimStart, "P"))
 {
@@ -163,7 +160,13 @@ MoveMouseBy(deltaX, deltaY) {
     global
     deltaX := Round(deltaX)
     deltaY := Round(deltaY)
+	if (deltaX < 0)
+	deltaX -= SdeltaS
+	if (deltaX > 0)
+	deltaX += SdeltaS
+	; ToolTip %deltaX%`n%deltaY%, round(A_ScreenWidth * .5 - 50), round(A_ScreenHeight * .5)
 	AHI.SendMouseMoveRelative(mouseid, deltaX, deltaY)
+	
 }
 ;==========================================Функция: есть курсор мышки - 1, нет курсора - 0
 FuncCursorVisible()
