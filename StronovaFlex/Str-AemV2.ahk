@@ -29,7 +29,7 @@ If !(A_IsAdmin || RegExMatch(CommandLine, " /restart(?!\S)"))
     }
     ExitApp
 }
-
+toggle := false ; Переменная для переключения состояния
 Menu,Tray, Icon, %A_ScriptDir%\data\icon.ico
 Menu,Tray, NoStandard
 Menu,Tray, DeleteAll
@@ -82,11 +82,13 @@ IniRead, captureRange, data\config.ini, Settings, AimcaptureRange, 100
 IniRead, circleColor, data\config.ini, Settings, AimcircleColor, 0x5FFF0000
 IniRead, thickness, data\config.ini, Settings, Aimthickness, 1
 IniRead, Sensitivity, data\config.ini, Settings, AimSensitivity, 0.1
-IniRead, AimOffsetPix, data\config.ini, Settings, AimAimOffsetPix, 30
 IniRead, EMCol, data\config.ini, Settings, AimEMCol, 0x8D0092
 IniRead, ColVn, data\config.ini, Settings, AimColVn, 50
-IniRead, SdeltaS, data\config.ini, Settings, SdeltaS, 0
-IniRead, deadZoneSize, data\config.ini, Settings, deadZoneSize, 0
+
+IniRead, AimOffsetPix, data\config.ini, Settings, AimAimOffsetPix, 5
+IniRead, DeadZoneSize, data\config.ini, Settings, DeadZoneSize, 0
+IniRead, Fucksiay, data\config.ini, Settings, Fucksiay, 0
+
 
 NearAimScanL := A_ScreenWidth // 2 - captureRange
 NearAimScanT := A_ScreenHeight // 2 - captureRange
@@ -124,21 +126,30 @@ OnGameClose()
 	}
 }
 
-
-
 Metkakey_start: 
 while (GetKeyState(key_aimStart, "P"))
 {
-    ; Sleep 1
     PixelSearch, AimPixelX, AimPixelY, NearAimScanL, NearAimScanT, NearAimScanR, NearAimScanB, EMCol, ColVn, Fast RGB
     if ErrorLevel = 0
     {
-        ; Проверяем мертвую зону
-        if (Abs(AimPixelX - (A_ScreenWidth / 2)) > deadZoneSize || Abs(AimPixelY - (A_ScreenHeight / 2)) > deadZoneSize)
+        if (Abs(AimPixelX - (A_ScreenWidth / 2)) > DeadZoneSize || Abs(AimPixelY - (A_ScreenHeight / 2 + AimOffsetPix)) > DeadZoneSize)
         {
-            AimAtTarget(AimPixelX, AimPixelY + AimOffsetPix)
+			AimAtTarget(AimPixelX, AimPixelY)
         }
     }
+	if Fucksiay
+	{
+	EMCol2 := "0xFFB16E"
+	ColVn2 := 5
+    PixelSearch, AimPixelX, AimPixelY, NearAimScanL, NearAimScanT, NearAimScanR, NearAimScanB, EMCol2, ColVn2, Fast RGB
+    if ErrorLevel = 0
+    {
+        if (Abs(AimPixelX - (A_ScreenWidth / 2)) > DeadZoneSize || Abs(AimPixelY - (A_ScreenHeight / 2 + AimOffsetPix)) > DeadZoneSize)
+        {
+			AimAtTarget(AimPixelX, AimPixelY)
+        }
+	}
+	}
 }
 Return
 
@@ -146,34 +157,13 @@ AimAtTarget(targetX, targetY) {
     global
     centerX := A_ScreenWidth / 2
     centerY := A_ScreenHeight / 2
-    
-    ; Вычисляем отклонение от центра экрана
     deltaX := (targetX - centerX)
-    deltaY := (targetY - centerY)
-    
-    ; Применяем чувствительность
-    deltaX := deltaX * sensitivity
-    deltaY := deltaY * sensitivity
-    
-    ; Округление значений для стабильности
-    deltaX := Round(deltaX)
-    deltaY := Round(deltaY)
-	if (deltaX < 0 && deltaX > -2)
-	deltaX -= SdeltaS
-	if (deltaX > 0 && deltaX < 2)
-	deltaX += SdeltaS
-    
-    ; Движение мыши
+    deltaY := (targetY - centerY + AimOffsetPix)
+    deltaX := Round(deltaX * sensitivity)
+    deltaY := Round(deltaY * sensitivity)
     AHI.SendMouseMoveRelative(mouseid, deltaX, deltaY)
 }
 
-
-
-
-
-; Зона мертвой зоны
-; Регулировка скорости наведения
-; Плавное движение мыши
 
 ;==========================================Функция: есть курсор мышки - 1, нет курсора - 0
 FuncCursorVisible()
