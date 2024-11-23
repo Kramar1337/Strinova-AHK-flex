@@ -54,7 +54,7 @@ IniRead, MouseVID, %A_ScriptDir%\data\config.ini, Settings, MouseVID
 IniRead, MousePID, %A_ScriptDir%\data\config.ini, Settings, MousePID
 IniRead, WindowFilter, data\config.ini, Settings, WindowFilter
 IniRead, key_aimStart, data\config.ini, Settings, key_aimStart, V
-
+IniRead, key_mode, data\config.ini, Settings, key_mode, F3
 
 ;=============================конвертируем айдишники из десятичной в хекс
 SetFormat, IntegerFast, hex
@@ -95,6 +95,7 @@ NearAimScanT := A_ScreenHeight // 2 - captureRange
 NearAimScanR := A_ScreenWidth // 2 + captureRange
 NearAimScanB := A_ScreenHeight // 2 + captureRange
 Hotkey, *~$%key_aimStart%, Metkakey_start, on
+Hotkey, *~$%key_mode%, Metkakey_mode, on
 
 if AimuseEllipse
 SetTimer, OnGameClose, 1000
@@ -126,29 +127,60 @@ OnGameClose()
 	}
 }
 
+Metkakey_mode:
+Toggler1 := !Toggler1
+if (Toggler1)
+{
+	Tooltip DMR mode (Марксманская винтовка), round(A_ScreenWidth * .5), round(A_ScreenHeight * .5)
+}
+else
+{
+	Tooltip AR mode (Автоматическая винтовка), round(A_ScreenWidth * .5), round(A_ScreenHeight * .5)
+}
+sleep 500
+Tooltip
+Return
+
+
+
+
 Metkakey_start: 
 while (GetKeyState(key_aimStart, "P"))
 {
     PixelSearch, AimPixelX, AimPixelY, NearAimScanL, NearAimScanT, NearAimScanR, NearAimScanB, EMCol, ColVn, Fast RGB
     if ErrorLevel = 0
     {
-        if (Abs(AimPixelX - (A_ScreenWidth / 2)) > DeadZoneSize || Abs(AimPixelY - (A_ScreenHeight / 2 + AimOffsetPix)) > DeadZoneSize)
-        {
+		if !Toggler1
+		{
+			if (Abs(AimPixelX - (A_ScreenWidth / 2)) > DeadZoneSize || Abs(AimPixelY - (A_ScreenHeight / 2 + AimOffsetPix)) > DeadZoneSize)
+			{
+				AimAtTarget(AimPixelX, AimPixelY)
+			}
+		}
+		else
+		{
 			AimAtTarget(AimPixelX, AimPixelY)
-        }
+		}
     }
 	if Fucksiay
 	{
-	EMCol2 := "0xFFB16E"
-	ColVn2 := 5
-    PixelSearch, AimPixelX, AimPixelY, NearAimScanL, NearAimScanT, NearAimScanR, NearAimScanB, EMCol2, ColVn2, Fast RGB
-    if ErrorLevel = 0
-    {
-        if (Abs(AimPixelX - (A_ScreenWidth / 2)) > DeadZoneSize || Abs(AimPixelY - (A_ScreenHeight / 2 + AimOffsetPix)) > DeadZoneSize)
-        {
-			AimAtTarget(AimPixelX, AimPixelY)
-        }
-	}
+		EMCol2 := "0xFFB16E"
+		ColVn2 := 5
+		PixelSearch, AimPixelX, AimPixelY, NearAimScanL, NearAimScanT, NearAimScanR, NearAimScanB, EMCol2, ColVn2, Fast RGB
+		if ErrorLevel = 0
+		{
+			if !Toggler1
+			{
+				if (Abs(AimPixelX - (A_ScreenWidth / 2)) > DeadZoneSize || Abs(AimPixelY - (A_ScreenHeight / 2 + AimOffsetPix)) > DeadZoneSize)
+				{
+					AimAtTarget(AimPixelX, AimPixelY)
+				}
+			}
+			else
+			{
+				AimAtTarget(AimPixelX, AimPixelY)
+			}
+		}
 	}
 }
 Return
@@ -158,9 +190,18 @@ AimAtTarget(targetX, targetY) {
     centerX := A_ScreenWidth / 2
     centerY := A_ScreenHeight / 2
     deltaX := (targetX - centerX)
+	if !Toggler1
     deltaY := (targetY - centerY + AimOffsetPix)
+	else
+	deltaY := (targetY - centerY + 1)
     deltaX := Round(deltaX * sensitivity)
     deltaY := Round(deltaY * sensitivity)
+	; tooltip %deltaX%`n%deltaY%, round(A_ScreenWidth * .5) - 100, round(A_ScreenHeight * .5)
+	; if deltaY > 0
+	; deltaY += 1
+	; if deltaY < 0
+	; deltaY -= 1
+	
     AHI.SendMouseMoveRelative(mouseid, deltaX, deltaY)
 }
 

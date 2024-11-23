@@ -6,6 +6,7 @@
 
 V - Аимбот
 C - Триггер
+F3 - Переключить режим аимбота, AR mode(по умолчанию), DMR mode(марксманские винтовки)
 F4 - Переключить режим триггера, 0 - Off, 1 - PixlGetColor, 2 - PixlSearch
 Ctrl + Down - Уменьшить область захвата пикселей триггера
 Ctrl + Up - Увеличить область захвата пикселей триггера
@@ -23,6 +24,7 @@ Numpad7 - Лоуин (Тень).
 Numpad8 - Селестия (БиПолярная звезда).
 Numpad9 - Одри (Чемпион) M249.
 NumpadAdd - Фуксия (Зубец).
+NumpadSub - Фрагранс (Цветение).
 
 */
 
@@ -60,11 +62,19 @@ Gui, Add, Button, gStart w100 h30, Start
 Gui, Add, Button, gHashChanger w100 h30, Hash Changer
 Gui, Add, Button, gNameChanger w100 h30, Name Changer
 Gui, Add, Button, gUpCfg w100 h30, Import Config
+Gui, Add, Button, gOpenConfig w100 h30, Open Config
 Gui, Add, Button, gExit w100 h30, Exit
 randomName := GenerateRandomName(15) ; 10 - длина имени
 yPosGui := A_ScreenHeight // 2 - round(A_ScreenHeight * (300 / 1440))
 Gui, Show, y%yPosGui%, %randomName%
+IniFile := A_ScriptDir "\data\config.ini"
 return
+
+OpenConfig:
+Run, notepad.exe "%IniFile%"
+return
+
+
 
 Start:
     ; Получаем путь к текущему скрипту

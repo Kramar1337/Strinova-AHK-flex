@@ -83,61 +83,105 @@ Return
 ReckekgoLab:
 if FuncCursorVisible() 	;Если есть курсор то возврат
 	Return
-if jopa1
+if jopa1 	;Numpad1 - Мишель (Инспектор)
 {
-if RCSinclude
-{
-#include %A_ScriptDir%\data\RCSinclude\Numpad1.ahk
-}
-Else
-{
-	Loop
+	if RCSinclude
 	{
-		Sleep 1
-		if A_Index < 30
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		else if A_Index < 60
-		AHI.SendMouseMoveRelative(mouseid, 0, 1)
-		else
-		AHI.SendMouseMoveRelative(mouseid, 0, 1)
-		GetKeyState, SpaceState, vk1, P
-		If SpaceState = U
-			break
+	#include %A_ScriptDir%\data\RCSinclude\Numpad1.ahk
 	}
+	Else
+	goto LabelNoRCSinclude211
 }
-}
-if jopa2
+if jopa2 	;Numpad2 - Ивет (ГОООООЛ!!!)
 {
-if RCSinclude
-{
-#include %A_ScriptDir%\data\RCSinclude\Numpad2.ahk
-}
-Else
-{
-	Sleep 100
-	Loop
+	if RCSinclude
 	{
-		Sleep 1
-		if A_Index < 30
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		else if A_Index < 60
-		AHI.SendMouseMoveRelative(mouseid, 0, 1)
-		else
-		AHI.SendMouseMoveRelative(mouseid, 0, 1)
-		GetKeyState, SpaceState, vk1, P
-		If SpaceState = U
-			break
+	#include %A_ScriptDir%\data\RCSinclude\Numpad2.ahk
 	}
+	Else
+	goto LabelNoRCSinclude211
 }
-}
-if jopa3
+if jopa3 	;Numpad3 - Нобунага (Судья), Маддалена (Хрома).
 {
-; if RCSinclude
-; {
-; #include %A_ScriptDir%\data\RCSinclude\Numpad3.ahk
-; }
-; Else
-; {
+	goto LabelNoRCSinclude454a
+}
+if jopa4 	;Numpad4 - Флавия (Соло).
+{
+	if RCSinclude
+	{
+	#include %A_ScriptDir%\data\RCSinclude\Numpad4.ahk
+	}
+	Else
+	goto LabelNoRCSinclude211
+	; Флавия(Соло) jopa2
+}
+if jopa5 	;Numpad5 - Мин (Мятежное пламя) АК47.
+{
+	if RCSinclude
+	{
+	#include %A_ScriptDir%\data\RCSinclude\Numpad5.ahk
+	}
+	Else
+	goto LabelNoRCSinclude232
+}
+if jopa6 	;Numpad6 - Мередит (Сокол) Ауг.
+{
+	if RCSinclude
+	{
+	#include %A_ScriptDir%\data\RCSinclude\Numpad6.ahk
+	}
+	Else
+	goto LabelNoRCSinclude232
+	; Мередит (Сокол) Ауг jopa5
+}
+if jopa7 	;Numpad7 - Лоуин (Тень).
+{
+	if RCSinclude
+	{
+	#include %A_ScriptDir%\data\RCSinclude\Numpad7.ahk
+	}
+	Else
+	goto LabelNoRCSinclude222
+}
+if jopa8 	;Numpad8 - Селестия (БиПолярная звезда).
+{
+	if RCSinclude
+	{
+	#include %A_ScriptDir%\data\RCSinclude\Numpad8.ahk
+	}
+	Else
+	goto LabelNoRCSinclude222
+}
+if jopa9 	;Numpad9 - Одри (Чемпион) M249.
+{
+	if RCSinclude
+	{
+	#include %A_ScriptDir%\data\RCSinclude\Numpad9.ahk
+	}
+	Else
+	goto LabelNoRCSinclude222
+}
+if jopa10 	;NumpadAdd - Фуксия (Зубец).
+{
+	if RCSinclude
+	{
+	#include %A_ScriptDir%\data\RCSinclude\NumpadAdd.ahk
+	}
+	Else
+	goto LabelNoRCSinclude222
+}
+if jopa11 	;NumpadSub - Фрагранс (Цветение).
+{
+	if RCSinclude
+	{
+	#include %A_ScriptDir%\data\RCSinclude\NumpadSub.ahk
+	}
+	Else
+	goto LabelNoRCSinclude211
+}
+Return
+
+LabelNoRCSinclude454a:
 	Loop
 	{
 		if A_Index < 30
@@ -154,175 +198,56 @@ if jopa3
 		If SpaceState = U
 			break
 	}
-; }
-}
-if jopa4
-{
-if RCSinclude
-{
-#include %A_ScriptDir%\data\RCSinclude\Numpad4.ahk
-}
-Else
-{
-	Sleep 100
-	Loop
-	{
-		Sleep 1
-		if A_Index < 30
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		else if A_Index < 60
-		AHI.SendMouseMoveRelative(mouseid, 0, 1)
-		else
-		AHI.SendMouseMoveRelative(mouseid, 0, 1)
-		GetKeyState, SpaceState, vk1, P
-		If SpaceState = U
-			break
-	}
-}
-; Флавия(Соло) jopa2
-}
-if jopa5
-{
-if RCSinclude
-{
-#include %A_ScriptDir%\data\RCSinclude\Numpad5.ahk
-}
-Else
-{
-	Loop
-	{
-		Sleep 1
-		if A_Index < 30
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		else if A_Index < 60
-		AHI.SendMouseMoveRelative(mouseid, 0, 3)
-		else
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		GetKeyState, SpaceState, vk1, P
-		If SpaceState = U
-			break
-	}
-}
-}
-if jopa6
-{
-if RCSinclude
-{
-#include %A_ScriptDir%\data\RCSinclude\Numpad6.ahk
-}
-Else
-{
-	Loop
-	{
-		Sleep 1
-		if A_Index < 30
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		else if A_Index < 60
-		AHI.SendMouseMoveRelative(mouseid, 0, 3)
-		else
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		GetKeyState, SpaceState, vk1, P
-		If SpaceState = U
-			break
-	}
-}
-; Мередит (Сокол) Ауг jopa5
-}
-if jopa7
-{
-if RCSinclude
-{
-#include %A_ScriptDir%\data\RCSinclude\Numpad7.ahk
-}
-Else
-{
-	Loop
-	{
-		Sleep 1
-		if A_Index < 30
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		else if A_Index < 60
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		else
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		GetKeyState, SpaceState, vk1, P
-		If SpaceState = U
-			break
-	}
-}
-}
-if jopa8
-{
-if RCSinclude
-{
-#include %A_ScriptDir%\data\RCSinclude\Numpad8.ahk
-}
-Else
-{
-	Sleep 50
-	Loop
-	{
-		Sleep 1
-		if A_Index < 30
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		else if A_Index < 60
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		else
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		GetKeyState, SpaceState, vk1, P
-		If SpaceState = U
-			break
-	}
-}
-}
-if jopa9
-{
-if RCSinclude
-{
-#include %A_ScriptDir%\data\RCSinclude\Numpad9.ahk
-}
-Else
-{
-	Loop
-	{
-		Sleep 1
-		if A_Index < 30
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		else if A_Index < 60
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		else
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		GetKeyState, SpaceState, vk1, P
-		If SpaceState = U
-			break
-	}
-}
-}
-if jopa10
-{
-if RCSinclude
-{
-#include %A_ScriptDir%\data\RCSinclude\NumpadAdd.ahk
-}
-Else
-{
-	Loop
-	{
-		Sleep 1
-		if A_Index < 30
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		else if A_Index < 60
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		else
-		AHI.SendMouseMoveRelative(mouseid, 0, 2)
-		GetKeyState, SpaceState, vk1, P
-		If SpaceState = U
-			break
-	}
-}
-}
 Return
 
+LabelNoRCSinclude211:
+	sleep 100
+	Loop
+	{
+		Sleep 1
+		if A_Index < 30
+		AHI.SendMouseMoveRelative(mouseid, 0, 2)
+		else if A_Index < 60
+		AHI.SendMouseMoveRelative(mouseid, 0, 1)
+		else
+		AHI.SendMouseMoveRelative(mouseid, 0, 1)
+		GetKeyState, SpaceState, vk1, P
+		If SpaceState = U
+			break
+	}
+Return
+
+LabelNoRCSinclude232:
+	Loop
+	{
+		Sleep 1
+		if A_Index < 30
+		AHI.SendMouseMoveRelative(mouseid, 0, 2)
+		else if A_Index < 60
+		AHI.SendMouseMoveRelative(mouseid, 0, 3)
+		else
+		AHI.SendMouseMoveRelative(mouseid, 0, 2)
+		GetKeyState, SpaceState, vk1, P
+		If SpaceState = U
+			break
+	}
+Return
+
+LabelNoRCSinclude222:
+	Loop
+	{
+		Sleep 1
+		if A_Index < 30
+		AHI.SendMouseMoveRelative(mouseid, 0, 2)
+		else if A_Index < 60
+		AHI.SendMouseMoveRelative(mouseid, 0, 2)
+		else
+		AHI.SendMouseMoveRelative(mouseid, 0, 2)
+		GetKeyState, SpaceState, vk1, P
+		If SpaceState = U
+			break
+	}
+Return
 
 
 ;Бинды================================================================
@@ -343,7 +268,7 @@ Return
 *~$Numpad2::
 Gosub, PutkinoOtrisanie
 jopa2:=true
-ToolTip Ивет (ГОООООЛ!!!), round(A_ScreenWidth * .5), round(A_ScreenHeight * .5)
+ToolTip Ивет ГОООООЛ!!!, round(A_ScreenWidth * .5), round(A_ScreenHeight * .5)
 Sleep 800
 ToolTip
 Return
@@ -400,6 +325,13 @@ Return
 Gosub, PutkinoOtrisanie
 jopa10:=true
 ToolTip Фуксия (Зубец), round(A_ScreenWidth * .5), round(A_ScreenHeight * .5)
+Sleep 800
+ToolTip
+Return
+*~$NumpadSub::
+Gosub, PutkinoOtrisanie
+jopa11:=true
+ToolTip Фрагранс (Цветение), round(A_ScreenWidth * .5), round(A_ScreenHeight * .5)
 Sleep 800
 ToolTip
 Return
