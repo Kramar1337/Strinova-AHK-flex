@@ -69,9 +69,9 @@ IfWinNotActive, %WindowFilter%
 return
 if FuncCursorVisible()
 return
-AHI.SendKeyEvent(keyboardId, 0x1D, 1) 	;0x1D код нажатия "P" Make (HEX)
+AHI.SendKeyEvent(keyboardId, 0x1D, 1)
 sleep 1
-AHI.SendKeyEvent(keyboardId, 0x1D, 0) 	;0x1D код отпускания "P" Break (HEX)
+AHI.SendKeyEvent(keyboardId, 0x1D, 0)
 return
 
 
