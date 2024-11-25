@@ -79,11 +79,21 @@ centerY := A_ScreenHeight / 2
 
 
 IniRead, captureRange, data\config.ini, Settings, AimcaptureRange, 100
+IniRead, captureRangeDMR, data\config.ini, Settings, AimcaptureRangeDMR, 200
 IniRead, circleColor, data\config.ini, Settings, AimcircleColor, 0x5FFF0000
 IniRead, thickness, data\config.ini, Settings, Aimthickness, 1
 IniRead, Sensitivity, data\config.ini, Settings, AimSensitivity, 0.1
 IniRead, EMCol, data\config.ini, Settings, AimEMCol, 0x8D0092
 IniRead, ColVn, data\config.ini, Settings, AimColVn, 50
+
+IniRead, EMCol2, data\config.ini, Settings, AimEMCol2, 0xFFB16E
+IniRead, ColVn2, data\config.ini, Settings, AimColVn2, 5
+
+IniRead, EMCol3, data\config.ini, Settings, AimEMCol3, 0xDA2D32
+IniRead, ColVn3, data\config.ini, Settings, AimColVn3, 5
+
+
+
 
 IniRead, AimOffsetPix, data\config.ini, Settings, AimAimOffsetPix, 5
 IniRead, DeadZoneSize, data\config.ini, Settings, DeadZoneSize, 0
@@ -111,7 +121,10 @@ OnGameClose()
 		if !FuncCursorVisible()
 		{
 			game.BeginDraw()
-			game.DrawEllipse(centerX, centerY, captureRange, captureRange, circleColor, thickness)
+			if Toggler1
+				game.DrawEllipse(centerX, centerY, captureRangeDMR, captureRangeDMR, circleColor, thickness)
+			else
+				game.DrawEllipse(centerX, centerY, captureRange, captureRange, circleColor, thickness)
 			game.EndDraw()
 		}
 		else
@@ -131,10 +144,18 @@ Metkakey_mode:
 Toggler1 := !Toggler1
 if (Toggler1)
 {
+	NearAimScanL := A_ScreenWidth // 2 - captureRangeDMR
+	NearAimScanT := A_ScreenHeight // 2 - captureRangeDMR
+	NearAimScanR := A_ScreenWidth // 2 + captureRangeDMR
+	NearAimScanB := A_ScreenHeight // 2 + captureRangeDMR
 	Tooltip DMR mode (Марксманская винтовка), round(A_ScreenWidth * .5), round(A_ScreenHeight * .5)
 }
 else
 {
+	NearAimScanL := A_ScreenWidth // 2 - captureRange
+	NearAimScanT := A_ScreenHeight // 2 - captureRange
+	NearAimScanR := A_ScreenWidth // 2 + captureRange
+	NearAimScanB := A_ScreenHeight // 2 + captureRange
 	Tooltip AR mode (Автоматическая винтовка), round(A_ScreenWidth * .5), round(A_ScreenHeight * .5)
 }
 sleep 500
@@ -142,13 +163,22 @@ Tooltip
 Return
 
 
-
+; 0xD4262A
+; 0xDA2D32
+; 0xDA2E32
+; 0xF83434
 
 Metkakey_start: 
 while (GetKeyState(key_aimStart, "P"))
 {
+	TogglerPixel=0
+	PixelSearch, GetAimPixelX, GetAimPixelY, NearAimScanL+1, NearAimScanT+1, NearAimScanR-1, NearAimScanB-1, EMCol3, ColVn3, Fast RGB
+	if ErrorLevel = 0
+	{
+		TogglerPixel=1
+	}
     PixelSearch, AimPixelX, AimPixelY, NearAimScanL, NearAimScanT, NearAimScanR, NearAimScanB, EMCol, ColVn, Fast RGB
-    if ErrorLevel = 0
+    if (ErrorLevel = 0 add TogglerPixel=1)
     {
 		if !Toggler1
 		{
@@ -164,8 +194,6 @@ while (GetKeyState(key_aimStart, "P"))
     }
 	if Fucksiay
 	{
-		EMCol2 := "0xFFB16E"
-		ColVn2 := 5
 		PixelSearch, AimPixelX, AimPixelY, NearAimScanL, NearAimScanT, NearAimScanR, NearAimScanB, EMCol2, ColVn2, Fast RGB
 		if ErrorLevel = 0
 		{
@@ -184,27 +212,33 @@ while (GetKeyState(key_aimStart, "P"))
 	}
 }
 Return
+; tooltip red, round(A_ScreenWidth * .5) - 100, round(A_ScreenHeight * .5)
 
 AimAtTarget(targetX, targetY) {
     global
     centerX := A_ScreenWidth / 2
     centerY := A_ScreenHeight / 2
     deltaX := (targetX - centerX)
+
 	if !Toggler1
-    deltaY := (targetY - centerY + AimOffsetPix)
+		deltaY := (targetY - centerY + AimOffsetPix)
 	else
-	deltaY := (targetY - centerY + 1)
+		deltaY := (targetY - centerY + 1)
+	; deltaX *=2
+	; deltaY *=2
+	
     deltaX := Round(deltaX * sensitivity)
     deltaY := Round(deltaY * sensitivity)
+	; tooltip %deltaX%`n%deltaY%, round(A_ScreenWidth * .5) - 100, round(A_ScreenHeight * .5)
+    AHI.SendMouseMoveRelative(mouseid, deltaX, deltaY)
+}
+
 	; tooltip %deltaX%`n%deltaY%, round(A_ScreenWidth * .5) - 100, round(A_ScreenHeight * .5)
 	; if deltaY > 0
 	; deltaY += 1
 	; if deltaY < 0
 	; deltaY -= 1
 	
-    AHI.SendMouseMoveRelative(mouseid, deltaX, deltaY)
-}
-
 
 ;==========================================Функция: есть курсор мышки - 1, нет курсора - 0
 FuncCursorVisible()

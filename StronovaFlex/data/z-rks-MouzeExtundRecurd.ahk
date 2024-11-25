@@ -29,7 +29,7 @@ for i, element in Keys
     States.Push(0)
 }
 
-ToolTip "F5 to start record", round(A_ScreenWidth * .5), 0
+ToolTip RButton & LButton to start record, round(A_ScreenWidth * .5-50), 0
 reckekgo1 = ~RButton & ~LButton
 reckekgo2 = ~LButton & ~RButton
 Hotkey, %reckekgo1%, ReckekgoLab, on
