@@ -51,6 +51,14 @@ IniRead, KeyboardPID, %A_ScriptDir%\data\config.ini, Settings, KeyboardPID
 IniRead, MouseVID, %A_ScriptDir%\data\config.ini, Settings, MouseVID
 IniRead, MousePID, %A_ScriptDir%\data\config.ini, Settings, MousePID
 IniRead, WindowFilter, data\config.ini, Settings, WindowFilter
+IniRead, key_FastPick, data\config.ini, Settings, key_FastPick
+IniRead, Checkbox_FastPick, data\config.ini, Settings, Checkbox_FastPick
+IniRead, Checkbox_Fast2d, data\config.ini, Settings, Checkbox_Fast2d
+if Checkbox_FastPick
+Hotkey, *~$%key_FastPick%, Metkakey_FastPick, on
+if Checkbox_Fast2d
+Hotkey, *~$R, Metkakey_Fast2d, on
+
 ;=============================конвертируем айдишники из десятичной в хекс
 SetFormat, IntegerFast, hex
 KeyboardVID += 0
@@ -63,15 +71,51 @@ Global mouseid := AHI.GetMouseId(MouseVID, MousePID)
 Global keyboardid := AHI.GetKeyboardId(KeyboardVID, KeyboardPID)
 return
 
-*~$R::
+Metkakey_FastPick:
 Sleep 1
 IfWinNotActive, %WindowFilter%
+	return
+Tolerance:=50
+xS1:=round(A_ScreenWidth * (620 / 2560))
+yS1:=round(A_ScreenHeight * (1120 / 1440))
+xS2:=round(A_ScreenWidth * (1950 / 2560))
+yS2:=round(A_ScreenHeight * (1390 / 1440))
+xS3:=round(A_ScreenWidth * (1280 / 2560))
+yS3:=round(A_ScreenHeight * (1050 / 1440))
+Tooltip FastPick, round(A_ScreenWidth * .5) - 50, 0
+While GetKeyState(key_FastPick, "P")
+{
+    ImageSearch, x, y, xS1, yS1, xS2, yS2, *%Tolerance% %A_ScriptDir%\data\Fastpick\1.png
+    if (ErrorLevel = 0)
+    {
+        Click, %x%, %y%
+		Sleep, 150
+		Click, %xS3%, %yS3%
+        break
+    }
+    ImageSearch, x, y, xS1, yS1, xS2, yS2, *%Tolerance% %A_ScriptDir%\data\Fastpick\2.png
+    if (ErrorLevel = 0)
+    {
+        Click, %x%, %y%
+		Sleep, 150
+		Click, %xS3%, %yS3%
+        break
+    }
+    Sleep 1
+}
+Tooltip
 return
+
+
+Metkakey_Fast2d:
+Sleep 1
+IfWinNotActive, %WindowFilter%
+	return
 if FuncCursorVisible()
-return
-AHI.SendKeyEvent(keyboardId, 0x1D, 1)
+	return
+AHI.SendKeyEvent(keyboardId, 0x1D, 1) 	;0x1D код нажатия "P" Make (HEX)
 sleep 1
-AHI.SendKeyEvent(keyboardId, 0x1D, 0)
+AHI.SendKeyEvent(keyboardId, 0x1D, 0) 	;0x1D код отпускания "P" Break (HEX)
 return
 
 

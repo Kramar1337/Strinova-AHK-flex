@@ -1,4 +1,20 @@
-﻿SetWorkingDir %A_WorkingDir%
+﻿/*
+Numpad0 - Off
+Numpad1 - Мишель (Инспектор)
+Numpad2 - Ивет (ГОООООЛ!!!)
+Numpad3 - Нобунага (Судья), Маддалена (Хрома)
+Numpad4 - Флавия (Соло)
+Numpad5 - Мин (Мятежное пламя) АК47
+Numpad6 - Мередит (Сокол) Ауг
+Numpad7 - Лоуин (Тень)
+Numpad8 - Селестия (БиПолярная звезда)
+Numpad9 - Одри (Чемпион) M249
+NumpadAdd - Фуксия (Зубец)
+NumpadSub - Фрагранс (Цветение)
+NumpadMult - Эйка (Пожар)
+*/
+
+SetWorkingDir %A_WorkingDir%
 #SingleInstance force
 DetectHiddenWindows On
 Process, Priority,, High
@@ -179,6 +195,13 @@ if jopa11 	;NumpadSub - Фрагранс (Цветение).
 	Else
 	goto LabelNoRCSinclude211
 }
+if jopa12 	;NumpadMult - Эйка (Пожар)
+{
+	if RCSinclude
+	{
+	#include %A_ScriptDir%\data\RCSinclude\NumpadMult.ahk
+	}
+}
 Return
 
 LabelNoRCSinclude454a:
@@ -332,6 +355,13 @@ Return
 Gosub, PutkinoOtrisanie
 jopa11:=true
 ToolTip Фрагранс (Цветение), round(A_ScreenWidth * .5), round(A_ScreenHeight * .5)
+Sleep 800
+ToolTip
+Return
+*~$NumpadMult::
+Gosub, PutkinoOtrisanie
+jopa12:=true
+ToolTip Эйка (Пожар), round(A_ScreenWidth * .5), round(A_ScreenHeight * .5)
 Sleep 800
 ToolTip
 Return

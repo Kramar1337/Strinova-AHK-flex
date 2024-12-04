@@ -59,6 +59,10 @@ NearAimScanB := A_ScreenHeight // 2 + captureRange
 Return
 
 
+F1::
+Run %A_ScriptDir%\z-rks-MouzeExtundRecurd.ahk
+Return
+
 
 *~$LButton::
 Sleep 1

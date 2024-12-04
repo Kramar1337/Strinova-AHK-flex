@@ -102,6 +102,7 @@ WaitForKey()
         LastTime := t
         Rec := Rec "`nSleep " Delay
     }
+	/*
     for i, element in Keys
     {
         state := GetKeystate(element)
@@ -118,6 +119,7 @@ WaitForKey()
             States[i] := state
         }
     }
+	*/
 }
 
 *~$End::

@@ -169,6 +169,9 @@ Return
 ; 0xF83434
 
 Metkakey_start: 
+stayCounter := 0
+lastDeltaX := 0
+lastDeltaY := 0
 while (GetKeyState(key_aimStart, "P"))
 {
 	TogglerPixel=0
@@ -214,31 +217,48 @@ while (GetKeyState(key_aimStart, "P"))
 Return
 ; tooltip red, round(A_ScreenWidth * .5) - 100, round(A_ScreenHeight * .5)
 
-AimAtTarget(targetX, targetY) {
+AimAtTarget(targetX, targetY) { 
     global
+    static lastInRangeTime := 0
+    static inRangeStartTime := 0
+
     centerX := A_ScreenWidth / 2
     centerY := A_ScreenHeight / 2
     deltaX := (targetX - centerX)
 
-	if !Toggler1
-		deltaY := (targetY - centerY + AimOffsetPix)
-	else
-		deltaY := (targetY - centerY + 1)
-	; deltaX *=2
-	; deltaY *=2
-	
+    if !Toggler1
+        deltaY := (targetY - centerY + AimOffsetPix)
+    else
+        deltaY := (targetY - centerY + 1)
+
+    if (deltaX >= -30 && deltaX <= 30 && deltaY >= -30 && deltaY <= 30) 
+	{
+
+        if (inRangeStartTime == 0)
+            inRangeStartTime := A_TickCount
+        else 
+		{
+            ; Проверяем, прошло ли больше 100 мс
+            if (A_TickCount - inRangeStartTime > 50) 
+			{
+                deltaX *= 1.5
+                deltaY *= 1.5
+            }
+        }
+    } 
+	else 
+	{
+        inRangeStartTime := 0
+    }
     deltaX := Round(deltaX * sensitivity)
     deltaY := Round(deltaY * sensitivity)
-	; tooltip %deltaX%`n%deltaY%, round(A_ScreenWidth * .5) - 100, round(A_ScreenHeight * .5)
     AHI.SendMouseMoveRelative(mouseid, deltaX, deltaY)
 }
 
+
 	; tooltip %deltaX%`n%deltaY%, round(A_ScreenWidth * .5) - 100, round(A_ScreenHeight * .5)
-	; if deltaY > 0
-	; deltaY += 1
-	; if deltaY < 0
-	; deltaY -= 1
-	
+	; tooltip %deltaX%`n%deltaY%, round(A_ScreenWidth * .5) - 100, round(A_ScreenHeight * .5)
+
 
 ;==========================================Функция: есть курсор мышки - 1, нет курсора - 0
 FuncCursorVisible()
