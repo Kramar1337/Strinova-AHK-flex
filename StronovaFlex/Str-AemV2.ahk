@@ -11,8 +11,6 @@ SetWinDelay,-1
 CoordMode, Mouse, Screen
 CoordMode, ToolTip, Screen
 #NoEnv
-
-
 CommandLine := DllCall("GetCommandLine", "Str")
 If !(A_IsAdmin || RegExMatch(CommandLine, " /restart(?!\S)")) 
 {
@@ -77,7 +75,6 @@ if AimuseEllipse
 centerX := A_ScreenWidth / 2
 centerY := A_ScreenHeight / 2
 
-
 IniRead, captureRange, data\config.ini, Settings, AimcaptureRange, 100
 IniRead, captureRangeDMR, data\config.ini, Settings, AimcaptureRangeDMR, 200
 IniRead, circleColor, data\config.ini, Settings, AimcircleColor, 0x5FFF0000
@@ -85,20 +82,13 @@ IniRead, thickness, data\config.ini, Settings, Aimthickness, 1
 IniRead, Sensitivity, data\config.ini, Settings, AimSensitivity, 0.1
 IniRead, EMCol, data\config.ini, Settings, AimEMCol, 0x8D0092
 IniRead, ColVn, data\config.ini, Settings, AimColVn, 50
-
 IniRead, EMCol2, data\config.ini, Settings, AimEMCol2, 0xFFB16E
 IniRead, ColVn2, data\config.ini, Settings, AimColVn2, 5
-
 IniRead, EMCol3, data\config.ini, Settings, AimEMCol3, 0xDA2D32
 IniRead, ColVn3, data\config.ini, Settings, AimColVn3, 5
-
-
-
-
 IniRead, AimOffsetPix, data\config.ini, Settings, AimAimOffsetPix, 5
 IniRead, DeadZoneSize, data\config.ini, Settings, DeadZoneSize, 0
 IniRead, Fucksiay, data\config.ini, Settings, Fucksiay, 0
-
 
 NearAimScanL := A_ScreenWidth // 2 - captureRange
 NearAimScanT := A_ScreenHeight // 2 - captureRange
@@ -163,15 +153,7 @@ Tooltip
 Return
 
 
-; 0xD4262A
-; 0xDA2D32
-; 0xDA2E32
-; 0xF83434
-
 Metkakey_start: 
-stayCounter := 0
-lastDeltaX := 0
-lastDeltaY := 0
 while (GetKeyState(key_aimStart, "P"))
 {
 	TogglerPixel=0
@@ -215,50 +197,23 @@ while (GetKeyState(key_aimStart, "P"))
 	}
 }
 Return
-; tooltip red, round(A_ScreenWidth * .5) - 100, round(A_ScreenHeight * .5)
 
-AimAtTarget(targetX, targetY) { 
+AimAtTarget(targetX, targetY) {
     global
-    static lastInRangeTime := 0
-    static inRangeStartTime := 0
-
     centerX := A_ScreenWidth / 2
     centerY := A_ScreenHeight / 2
+	
     deltaX := (targetX - centerX)
-
-    if !Toggler1
-        deltaY := (targetY - centerY + AimOffsetPix)
-    else
-        deltaY := (targetY - centerY + 1)
-
-    if (deltaX >= -30 && deltaX <= 30 && deltaY >= -30 && deltaY <= 30) 
-	{
-
-        if (inRangeStartTime == 0)
-            inRangeStartTime := A_TickCount
-        else 
-		{
-            ; Проверяем, прошло ли больше 100 мс
-            if (A_TickCount - inRangeStartTime > 50) 
-			{
-                deltaX *= 1.5
-                deltaY *= 1.5
-            }
-        }
-    } 
-	else 
-	{
-        inRangeStartTime := 0
-    }
+	if !Toggler1
+    deltaY := (targetY - centerY + AimOffsetPix)
+	else
+	deltaY := (targetY - centerY + 1)
+	
     deltaX := Round(deltaX * sensitivity)
     deltaY := Round(deltaY * sensitivity)
     AHI.SendMouseMoveRelative(mouseid, deltaX, deltaY)
 }
-
-
 	; tooltip %deltaX%`n%deltaY%, round(A_ScreenWidth * .5) - 100, round(A_ScreenHeight * .5)
-	; tooltip %deltaX%`n%deltaY%, round(A_ScreenWidth * .5) - 100, round(A_ScreenHeight * .5)
-
 
 ;==========================================Функция: есть курсор мышки - 1, нет курсора - 0
 FuncCursorVisible()
